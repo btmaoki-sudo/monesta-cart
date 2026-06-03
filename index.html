@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MONESTA 公式ストア</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+      background: #f5f6f8;
+      color: #1a1a1a;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    /* ヘッダー */
+    header {
+      background: #ffffff;
+      padding: 24px 20px 20px;
+      text-align: center;
+      border-bottom: 3px solid #1b3f7a;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    header img.logo {
+      max-width: 220px;
+      width: 70%;
+      height: auto;
+    }
+
+    header p.tagline {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #555;
+      letter-spacing: 0.03em;
+    }
+
+    /* セクション共通 */
+    section {
+      background: #ffffff;
+      margin: 14px 14px;
+      border-radius: 14px;
+      padding: 24px 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1b3f7a;
+      border-left: 5px solid #1b3f7a;
+      padding-left: 12px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    p { font-size: 17px; line-height: 1.8; }
+
+    /* 実績バッジ */
+    .achievement-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* メインバッジ：受注件数 */
+    .badge-main {
+      background: #ffffff;
+      border: 1px solid #dce4f5;
+      border-top: 5px solid #1b3f7a;
+      border-radius: 14px;
+      padding: 22px 20px 20px;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(27,63,122,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .badge-main::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(135deg, #f0f5ff 0%, #ffffff 60%);
+      z-index: 0;
+    }
+
+    .badge-main > * { position: relative; z-index: 1; }
+
+    .badge-main .badge-eyebrow {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1b3f7a;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .badge-main .badge-num {
+      display: block;
+      font-size: 58px;
+      font-weight: 900;
+      color: #1b3f7a;
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .badge-main .badge-num span.plus {
+      font-size: 38px;
+      vertical-align: super;
+    }
+
+    .badge-main .badge-label {
+      display: block;
+      font-size: 16px;
+      font-weight: 700;
+      color: #333;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-main .badge-sub {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* サブバッジ：楽天受賞 */
+    .badge-sub-card {
+      background: #ffffff;
+      border: 1px solid #dce4f5;
+      border-left: 5px solid #bf0000;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.07);
+    }
+
+    .badge-sub-card .badge-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .badge-sub-card .badge-body {}
+
+    .badge-sub-card .badge-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #bf0000;
+      line-height: 1.3;
+      display: block;
+    }
+
+    .badge-sub-card .badge-desc {
+      font-size: 14px;
+      color: #444;
+      margin-top: 3px;
+      display: block;
+      line-height: 1.5;
+    }
+
+    /* カテゴリタグ */
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .cat-tag {
+      background: #eef3fc;
+      color: #1b3f7a;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* ショップボタン */
+    .shop-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .shop-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 18px 20px;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      text-decoration: none;
+      color: #ffffff;
+      transition: opacity 0.15s, transform 0.1s;
+      letter-spacing: 0.02em;
+    }
+
+    .shop-btn:active { opacity: 0.85; transform: scale(0.98); }
+
+    .btn-rakuten  { background: #bf0000; }
+    .btn-yahoo    { background: #5f0099; }
+    .btn-amazon   { background: #FF9900; color: #111; }
+
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .btn-text { line-height: 1.2; }
+    .btn-sub  { display: block; font-size: 12px; font-weight: 400; opacity: 0.9; margin-top: 2px; }
+
+    /* 無人販売 */
+    .unattended-info {
+      background: #fffbef;
+      border: 2px solid #e8a000;
+      border-radius: 12px;
+      padding: 18px;
+    }
+
+    .unattended-info p {
+      font-size: 17px;
+      line-height: 1.9;
+    }
+
+    .pay-methods {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .pay-badge {
+      background: #fff;
+      border: 2px solid #e8a000;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #7a5200;
+      text-align: center;
+      flex: 1;
+    }
+
+    .bell-note {
+      margin-top: 16px;
+      background: #fff8e1;
+      border-radius: 10px;
+      padding: 14px 16px;
+      font-size: 16px;
+      color: #5c4000;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .bell-note .icon { font-size: 24px; flex-shrink: 0; }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: 28px 20px 36px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    footer a { color: #888; text-decoration: none; }
+
+    /* 外部リンク矢印 */
+    .arrow::after { content: " →"; }
+
+    /* 区切り */
+    .divider {
+      border: none;
+      border-top: 1px solid #e8edf5;
+      margin: 14px 0;
+    }
+
+    @media (max-width: 360px) {
+      section { padding: 20px 16px; }
+      .badge .num { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ヘッダー -->
+<header>
+  <img
+    class="logo"
+    src="logo.png"
+    alt="MONESTA ロゴ"
+    onerror="this.style.display='none'; document.getElementById('logo-text').style.display='block';"
+  >
+  <!-- logo.png が見つからない場合のフォールバック -->
+  <div id="logo-text" style="display:none; font-size:32px; font-weight:900; letter-spacing:0.06em; color:#1a1a1a;">
+    MONESTA
+  </div>
+  <p class="tagline">公式オンラインストア</p>
+</header>
+
+<!-- 冒頭紹介 -->
+<section>
+  <p style="font-size:19px; font-weight:700; color:#1a1a1a; margin-bottom:6px;">このカートはMONESTAが運営しています</p>
+  <p style="font-size:13px; color:#888; margin-bottom:14px;">フラワーショップ いわもとさんのななめ前の事務所です。</p>
+  <div class="achievement-wrap" style="margin-bottom:18px;">
+    <!-- サブ：楽天受賞（先に表示） -->
+    <div class="badge-sub-card">
+      <span class="badge-icon">🏆</span>
+      <div class="badge-body">
+        <span class="badge-title">楽天ショップ・オブ・ザ・マンス 受賞</span>
+        <span class="badge-desc">楽天市場が認定する優良ショップ賞を3年連続受賞</span>
+      </div>
+    </div>
+    <!-- メイン：受注件数 -->
+    <div class="badge-main">
+      <span class="badge-eyebrow">累計受注件数</span>
+      <span class="badge-num">400,000<span class="plus">+</span></span>
+      <span class="badge-label">突破</span>
+      <span class="badge-sub">多くのお客様にご愛顧いただいております</span>
+    </div>
+  </div>
+  <p>
+    MONESTAは株式会社 Blue Treeが運営する日本法人のネットショップブランドです。<br>
+    生活をもっと快適に、便利にする雑貨・旅行用品・アウトドア用品・快眠グッズなどの輸入雑貨を販売しております。<br>
+    インターネットを中心に全国のお客様へ商品をお届けしており、多くのお客様にご利用いただいております。
+  </p>
+</section>
+
+<!-- 無人販売 -->
+<section>
+  <h2>📦 この場所の無人販売について</h2>
+  <div class="unattended-info">
+    <p>
+      当店の商品を実際に手にとってご覧いただける無人販売カートです。<br>
+      気に入った商品はその場でお買い求めいただけます。
+    </p>
+    <p style="margin-top:12px; font-size:15px; color:#7a5200; background:#fff3cd; border-radius:8px; padding:10px 14px;">
+      ⚠️ このカートの商品はネット未掲載の商品もございます
+    </p>
+
+    <hr class="divider">
+
+    <p style="font-weight:700; font-size:16px; color:#5c4000; margin-bottom:8px;">お支払い方法</p>
+    <div class="pay-methods">
+      <div class="pay-badge">📱 PayPay</div>
+      <div class="pay-badge">💴 現金</div>
+    </div>
+
+    <div class="bell-note">
+      <span class="icon">🔔</span>
+      <span>
+        お釣りが必要な場合や、ご不明な点があれば<strong>ベルを鳴らしてください</strong>。スタッフがご対応します。
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- 取扱カテゴリ -->
+<section>
+  <h2>取扱カテゴリ</h2>
+  <div class="categories">
+    <span class="cat-tag">🏠 生活雑貨</span>
+    <span class="cat-tag">✈️ 旅行用品</span>
+    <span class="cat-tag">🏕️ アウトドア用品</span>
+    <span class="cat-tag">🚗 カー・バイク・自転車用品</span>
+    <span class="cat-tag">👜 ファッション小物</span>
+    <span class="cat-tag">など多数</span>
+  </div>
+</section>
+
+<!-- ショップリンク -->
+<section>
+  <h2>オンラインで購入する</h2>
+  <p style="font-size:15px; color:#666; margin-bottom:12px;">以下のボタンをタップすると各ショップへ移動します</p>
+  <div style="background:#f0f5ff; border-left:4px solid #1b3f7a; border-radius:10px; padding:14px 16px; margin-bottom:18px; font-size:15px; color:#1a1a1a; line-height:1.8;">
+    🏪 気になる商品は実物を店舗でも確認できます！<br>
+    <span style="color:#555;">フラワーショップ いわもとさんのななめ前の事務所までお気軽にどうぞ。</span>
+  </div>
+  <div class="shop-buttons">
+
+    <a class="shop-btn btn-rakuten arrow" href="https://www.rakuten.co.jp/btstoreosk/" target="_blank" rel="noopener">
+      <span class="btn-text">
+        楽天市場店
+        <span class="btn-sub">ショップ・オブ・ザ・マンス受賞</span>
+      </span>
+    </a>
+
+    <a class="shop-btn btn-yahoo arrow" href="https://store.shopping.yahoo.co.jp/btstoreosk/" target="_blank" rel="noopener">
+      <span class="btn-text">
+        Yahoo!ショッピング店
+        <span class="btn-sub">PayPayポイントも使えます</span>
+      </span>
+    </a>
+
+    <a class="shop-btn btn-amazon arrow" href="https://www.amazon.co.jp/stores/MONESTA/page/A5C5EC59-C88B-40C8-A080-C8E6795F684F?lp_asin=B0G1SQWY5C&ref_=ast_bln&store_ref=bl_ast_dp_brandlogo_sto" target="_blank" rel="noopener">
+      <span class="btn-text">
+        Amazon店
+        <span class="btn-sub">Primeお急ぎ便にも対応</span>
+      </span>
+    </a>
+
+  </div>
+</section>
+
+<!-- フッター -->
+<footer>
+  <p>© MONESTA ／ 株式会社 Blue Tree</p>
+  <p style="margin-top:6px;">
+    <a href="https://www.rakuten.co.jp/btstoreosk/" target="_blank" rel="noopener">楽天</a>
+
+    <a href="https://store.shopping.yahoo.co.jp/btstoreosk/" target="_blank" rel="noopener">Yahoo!</a>
+
+    <a href="https://www.amazon.co.jp/stores/MONESTA/page/A5C5EC59-C88B-40C8-A080-C8E6795F684F?lp_asin=B0G1SQWY5C&ref_=ast_bln&store_ref=bl_ast_dp_brandlogo_sto" target="_blank" rel="noopener">Amazon</a>
+  </p>
+</footer>
+
+</body>
+</html>
